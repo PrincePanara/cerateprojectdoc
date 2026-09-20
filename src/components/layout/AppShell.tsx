@@ -73,11 +73,22 @@ export function AppShell() {
             <span className="truncate">{p.basicInfo.projectName}</span>
           </button>)}
       </nav>
-      <div className="p-3 border-t border-line2 space-y-0.5">
-        {NAV_FOOTER.map((item) => <NavLink key={item.to} to={item.to} className={linkClass} onClick={() => setMobileOpen(false)}>
-            <item.icon className="w-4 h-4 shrink-0" aria-hidden />
-            {item.label}
-          </NavLink>)}
+      <div className="p-3 border-t border-line2 space-y-2">
+        <div className="space-y-0.5">
+          {NAV_FOOTER.map((item) => <NavLink key={item.to} to={item.to} className={linkClass} onClick={() => setMobileOpen(false)}>
+              <item.icon className="w-4 h-4 shrink-0" aria-hidden />
+              {item.label}
+            </NavLink>)}
+        </div>
+        <a
+          href="https://github.com/PrincePanara"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-[12px] text-ink3 hover:text-ink hover:bg-surface2 transition-colors duration-150"
+        >
+          <img src="/plogo.png" alt="Prince Panara" className="w-4 h-4 rounded-full object-cover border border-line" />
+          <span>Made with ❤️ by Prince Panara</span>
+        </a>
       </div>
     </div>;
   return <div className="min-h-full w-full bg-canvas flex">

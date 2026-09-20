@@ -239,9 +239,21 @@ export function Landing() {
       </section>
 
       <footer className="border-t border-line2">
-        <div className="mx-auto max-w-6xl px-5 py-8 flex flex-col sm:flex-row items-center justify-between gap-3">
+        <div className="mx-auto max-w-6xl px-5 py-8 flex flex-col sm:flex-row items-center justify-between gap-4">
           <Logo size="sm" />
-          <p className="text-[12.5px] text-ink3">© {new Date().getFullYear()} DocuForge AI · From project idea to professional report.</p>
+          <div className="flex items-center gap-2 text-[13px] text-ink2">
+            <span>Made with <span className="text-red-500">❤️</span> by</span>
+            <a
+              href="https://github.com/PrincePanara"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 font-medium text-ink hover:text-brand transition-colors"
+            >
+              <img src="/plogo.png" alt="Prince Panara" className="w-6 h-6 rounded-full object-cover border border-line shadow-sm" />
+              <span>Prince Panara</span>
+            </a>
+          </div>
+          <p className="text-[12.5px] text-ink3">© {new Date().getFullYear()} DocuForge AI</p>
         </div>
       </footer>
     </div>);

@@ -332,7 +332,13 @@ This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) 
 
 <div align="center">
 
-Made with ❤️ by [Prince Panara](https://github.com/PrincePanara)
+<a href="https://github.com/PrincePanara">
+  <img src="public/plogo.png" alt="Prince Panara Logo" width="72" height="72" style="border-radius: 50%; box-shadow: 0 4px 14px rgba(0,0,0,0.15);" />
+</a>
+
+<br/>
+
+Made with ❤️ by **[Prince Panara](https://github.com/PrincePanara)**
 
 ⭐ **Star this repository if you find it helpful!**
 
