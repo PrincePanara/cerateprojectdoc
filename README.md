@@ -2,8 +2,6 @@
 
 <div align="center">
 
-![DocuForge AI Banner](public/3ef0b3ef-16c3-414d-8c20-3a02a5cd07e5.jpg)
-
 **Intelligent Academic & Software Engineering Project Documentation Generator**
 
 An all-in-one platform to plan, structure, generate, and export comprehensive, university- and IEEE-compliant software project documentation, complete with UML diagrams, database schemas, test cases, and editable Microsoft Word (`.docx`) exports.
