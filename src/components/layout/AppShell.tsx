@@ -81,7 +81,7 @@ export function AppShell() {
             </NavLink>)}
         </div>
         <a
-          href="https://github.com/PrincePanara"
+          href="https://princepanara.vercel.app"
           target="_blank"
           rel="noopener noreferrer"
           className="flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-[12px] text-ink3 hover:text-ink hover:bg-surface2 transition-colors duration-150"

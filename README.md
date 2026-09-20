@@ -332,13 +332,18 @@ This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) 
 
 <div align="center">
 
-<a href="https://github.com/PrincePanara">
-  <img src="public/plogo.png" alt="Prince Panara Logo" width="72" height="72" style="border-radius: 50%; box-shadow: 0 4px 14px rgba(0,0,0,0.15);" />
+<a href="https://princepanara.vercel.app" target="_blank" rel="noopener noreferrer">
+  <img src="public/plogo.png" alt="Prince Panara" width="80" height="80" style="border-radius: 50%; box-shadow: 0 4px 16px rgba(0,0,0,0.18);" />
 </a>
 
 <br/>
+<br/>
 
-Made with ❤️ by **[Prince Panara](https://github.com/PrincePanara)**
+Made with ❤️ by **[Prince Panara](https://princepanara.vercel.app)**
+
+🌐 **[Portfolio](https://princepanara.vercel.app)** • 🐙 **[GitHub](https://github.com/PrincePanara)**
+
+<br/>
 
 ⭐ **Star this repository if you find it helpful!**
 

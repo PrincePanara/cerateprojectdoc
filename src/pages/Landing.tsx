@@ -244,7 +244,7 @@ export function Landing() {
           <div className="flex items-center gap-2 text-[13px] text-ink2">
             <span>Made with <span className="text-red-500">❤️</span> by</span>
             <a
-              href="https://github.com/PrincePanara"
+              href="https://princepanara.vercel.app"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 font-medium text-ink hover:text-brand transition-colors"
