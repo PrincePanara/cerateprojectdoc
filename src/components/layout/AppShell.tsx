@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
-import { FolderIcon, ImageIcon, LayoutDashboardIcon, LayoutTemplateIcon, MenuIcon, PenLineIcon, SettingsIcon, ShapesIcon, XIcon, BoxIcon } from "lucide-react";
+import { FolderIcon, ImageIcon, LayoutDashboardIcon, LayoutTemplateIcon, MenuIcon, PenLineIcon, SettingsIcon, ShapesIcon, XIcon, BoxIcon, CreditCardIcon } from "lucide-react";
 import { Logo } from "../brand/Logo";
 import { SaveIndicator } from "./SaveIndicator";
 import { UserMenu } from "./UserMenu";
@@ -36,6 +36,10 @@ const NAV_FOOTER = [{
   to: '/app/settings',
   label: 'Settings',
   icon: SettingsIcon
+}, {
+  to: '/app/billing',
+  label: 'Billing',
+  icon: CreditCardIcon
 }, {
   to: '/app/help',
   label: 'Help',

@@ -91,6 +91,19 @@ export function Dashboard() {
         </section>
       }
 
+      <section className="rounded-xl border border-line bg-surface p-5 flex flex-col sm:flex-row sm:items-center gap-5 justify-between">
+        <div className="min-w-0 flex-1">
+          <p className="text-[11px] font-semibold tracking-[0.08em] text-ink3">YOUR SUBSCRIPTION</p>
+          <h2 className="text-[17px] font-semibold text-ink mt-1.5 truncate">Pro Plan (Active)</h2>
+          <p className="text-[13px] text-ink2 mt-1">
+            Next billing date: 15 Nov, 2026 · $15.00/month
+          </p>
+        </div>
+        <div className="flex gap-2 shrink-0">
+          <Button onClick={() => navigate('/app/billing')}>Manage Billing</Button>
+        </div>
+      </section>
+
       <section>
         <div className="flex items-center justify-between gap-4 mb-4">
           <h2 className="text-[16px] font-semibold text-ink">Your projects</h2>

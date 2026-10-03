@@ -14,6 +14,7 @@ import { Templates } from './pages/Templates';
 import { ScreenshotsLibrary } from './pages/ScreenshotsLibrary';
 import { DiagramsLibrary } from './pages/DiagramsLibrary';
 import { Settings } from './pages/Settings';
+import { Billing } from './pages/Billing';
 import { Help } from './pages/Help';
 import { Builder } from './pages/Builder';
 import { ProjectWizard } from './pages/ProjectWizard';
@@ -43,6 +44,7 @@ export function App() {
                   <Route path="screenshots" element={<ScreenshotsLibrary />} />
                   <Route path="diagrams" element={<DiagramsLibrary />} />
                   <Route path="settings" element={<Settings />} />
+                  <Route path="billing" element={<Billing />} />
                   <Route path="help" element={<Help />} />
                 </Route>
                 <Route
