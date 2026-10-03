@@ -6,7 +6,7 @@ import { Button } from '../components/ui/Button';
 const PLANS = [
   {
     name: 'Free',
-    price: '$0',
+    price: '₹0',
     period: '/ month',
     description: 'Perfect for exploring and small personal projects.',
     features: ['1 project per month', 'Basic templates', 'Standard export format'],
@@ -16,7 +16,7 @@ const PLANS = [
   },
   {
     name: 'Pro',
-    price: '$15',
+    price: '₹999',
     period: '/ month',
     description: 'Ideal for professionals needing regular documentation.',
     features: ['15 projects per month', 'Premium templates', 'Custom branding', 'Priority support'],
@@ -26,7 +26,7 @@ const PLANS = [
   },
   {
     name: 'Team',
-    price: '$49',
+    price: '₹3,499',
     period: '/ month',
     description: 'For teams building documentation collaboratively.',
     features: ['Unlimited projects', 'All Premium features', 'Team collaboration', 'API Access'],
@@ -93,6 +93,10 @@ export function Billing() {
                 <p className="text-[14px] font-medium text-ink">Pro Plan</p>
                 <p className="text-[13px] text-ink2 mt-1">Active · Renews on Nov 15, 2026</p>
               </div>
+              <div className="text-right">
+                <p className="text-[14px] font-medium text-ink">₹999 / month</p>
+                <Button size="sm" variant="ghost" className="mt-2 text-brand">Change Plan</Button>
+              </div>
             </div>
             <div>
               <p className="text-[13px] text-ink">Documentation Quota</p>
@@ -120,9 +124,9 @@ export function Billing() {
       <Panel title="Invoices">
         <ul className="divide-y divide-line2">
           {[
-            { date: 'Oct 15, 2026', amount: '$15.00', status: 'Paid', invoiceId: 'INV-2026-10' },
-            { date: 'Sep 15, 2026', amount: '$15.00', status: 'Paid', invoiceId: 'INV-2026-09' },
-            { date: 'Aug 15, 2026', amount: '$15.00', status: 'Paid', invoiceId: 'INV-2026-08' },
+            { date: 'Oct 15, 2026', amount: '₹999', status: 'Paid', invoiceId: 'INV-2026-10' },
+            { date: 'Sep 15, 2026', amount: '₹999', status: 'Paid', invoiceId: 'INV-2026-09' },
+            { date: 'Aug 15, 2026', amount: '₹999', status: 'Paid', invoiceId: 'INV-2026-08' },
           ].map((inv) => (
             <li key={inv.invoiceId} className="flex items-center justify-between py-3 first:pt-0 last:pb-0">
               <div>
