@@ -19,9 +19,11 @@ export function Auth() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
+  const nextRoute = params.get('next') || '/app';
+
   useEffect(() => {
-    if (user) navigate('/app', { replace: true });
-  }, [user, navigate]);
+    if (user) navigate(nextRoute, { replace: true });
+  }, [user, navigate, nextRoute]);
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -30,7 +32,7 @@ export function Auth() {
     try {
       if (mode === 'signup') await signUp(name, email, password);else
       await signIn(email, password);
-      navigate('/app', { replace: true });
+      navigate(nextRoute, { replace: true });
     } catch (err: any) {
       let msg = err instanceof Error ? err.message : 'Something went wrong. Please try again.';
       if (msg.includes('auth/invalid-credential')) msg = 'Invalid email or password.';
@@ -47,7 +49,7 @@ export function Auth() {
     setLoading(true);
     try {
       await signIn('aarav.mehta@college.edu', 'demo1234');
-      navigate('/app', { replace: true });
+      navigate(nextRoute, { replace: true });
     } catch {
       setError('Could not open the demo workspace.');
     } finally {
@@ -124,7 +126,7 @@ export function Auth() {
                   setLoading(true);
                   try {
                     await signInWithGoogle();
-                    navigate('/app', { replace: true });
+                    navigate(nextRoute, { replace: true });
                   } catch (err: any) {
                     let msg = err instanceof Error ? err.message : 'Failed to sign in with Google.';
                     if (msg.includes('auth/popup-closed-by-user')) msg = 'Sign-in popup was closed before completing.';
