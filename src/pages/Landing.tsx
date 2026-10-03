@@ -238,6 +238,58 @@ export function Landing() {
         </div>
       </section>
 
+      {/* contact */}
+      <section id="contact" className="border-t border-line2">
+        <div className="mx-auto max-w-xl px-5 py-16 lg:py-20">
+          <div className="text-center mb-10">
+            <h2 className="text-[26px] lg:text-[30px] font-semibold tracking-[-0.02em] text-ink">Contact Us</h2>
+            <p className="mt-3 text-[14.5px] text-ink2 leading-relaxed">
+              Have questions or feedback? Send us a message and we'll get back to you.
+            </p>
+          </div>
+          <form 
+            onSubmit={async (e) => {
+              e.preventDefault();
+              const form = e.target as HTMLFormElement;
+              const name = (form.elements.namedItem('name') as HTMLInputElement).value;
+              const email = (form.elements.namedItem('email') as HTMLInputElement).value;
+              const message = (form.elements.namedItem('message') as HTMLTextAreaElement).value;
+              
+              if (!name || !email || !message) return;
+              
+              try {
+                // Dynamically import to avoid loading Firebase on initial render unless used
+                const { database } = await import('../firebase');
+                const { ref, push, set } = await import('firebase/database');
+                const newContactRef = push(ref(database, 'contacts'));
+                await set(newContactRef, {
+                  name, email, message, timestamp: Date.now()
+                });
+                alert('Thank you for reaching out! We will get back to you soon.');
+                form.reset();
+              } catch (err) {
+                alert('There was an error submitting your form. Please try again later.');
+              }
+            }}
+            className="flex flex-col gap-4 bg-surface p-6 rounded-xl border border-line"
+          >
+            <div className="flex flex-col gap-1.5">
+              <label htmlFor="contact-name" className="text-[13px] font-medium text-ink">Name</label>
+              <input id="contact-name" name="name" required className="w-full h-10 px-3 rounded-lg border border-line bg-canvas text-[13.5px] text-ink placeholder:text-ink3 focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand" placeholder="Your name" />
+            </div>
+            <div className="flex flex-col gap-1.5">
+              <label htmlFor="contact-email" className="text-[13px] font-medium text-ink">Email</label>
+              <input id="contact-email" name="email" type="email" required className="w-full h-10 px-3 rounded-lg border border-line bg-canvas text-[13.5px] text-ink placeholder:text-ink3 focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand" placeholder="you@example.com" />
+            </div>
+            <div className="flex flex-col gap-1.5">
+              <label htmlFor="contact-message" className="text-[13px] font-medium text-ink">Message</label>
+              <textarea id="contact-message" name="message" required rows={4} className="w-full p-3 rounded-lg border border-line bg-canvas text-[13.5px] text-ink placeholder:text-ink3 focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand resize-y" placeholder="How can we help?" />
+            </div>
+            <Button type="submit" variant="primary" className="mt-2">Send Message</Button>
+          </form>
+        </div>
+      </section>
+
       <footer className="border-t border-line2">
         <div className="mx-auto max-w-6xl px-5 py-8 flex flex-col sm:flex-row items-center justify-between gap-4">
           <Logo size="sm" />

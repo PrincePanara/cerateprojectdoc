@@ -31,8 +31,12 @@ export function Auth() {
       if (mode === 'signup') await signUp(name, email, password);else
       await signIn(email, password);
       navigate('/app', { replace: true });
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Something went wrong. Please try again.');
+    } catch (err: any) {
+      let msg = err instanceof Error ? err.message : 'Something went wrong. Please try again.';
+      if (msg.includes('auth/invalid-credential')) msg = 'Invalid email or password.';
+      else if (msg.includes('auth/email-already-in-use')) msg = 'An account with this email already exists.';
+      else if (msg.includes('auth/weak-password')) msg = 'Password should be at least 6 characters.';
+      setError(msg);
     } finally {
       setLoading(false);
     }
@@ -114,11 +118,21 @@ export function Auth() {
             <div className="flex flex-col gap-2">
               <Button
                 size="lg"
+                type="button"
                 onClick={async () => {
+                  setError(null);
                   setLoading(true);
-                  await signInWithGoogle();
-                  setLoading(false);
-                  navigate('/app', { replace: true });
+                  try {
+                    await signInWithGoogle();
+                    navigate('/app', { replace: true });
+                  } catch (err: any) {
+                    let msg = err instanceof Error ? err.message : 'Failed to sign in with Google.';
+                    if (msg.includes('auth/popup-closed-by-user')) msg = 'Sign-in popup was closed before completing.';
+                    else if (msg.includes('auth/cancelled-popup-request')) msg = 'Sign-in popup was cancelled.';
+                    setError(msg);
+                  } finally {
+                    setLoading(false);
+                  }
                 }}>
                 
                 Continue with Google

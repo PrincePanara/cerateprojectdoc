@@ -1,5 +1,15 @@
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import type { UserProfile } from '../types/project';
+import { auth, database } from '../firebase';
+import { 
+  createUserWithEmailAndPassword, 
+  signInWithEmailAndPassword, 
+  onAuthStateChanged, 
+  signOut as firebaseSignOut,
+  GoogleAuthProvider,
+  signInWithPopup
+} from 'firebase/auth';
+import { ref, set, get } from 'firebase/database';
 
 interface AuthContextValue {
   user: UserProfile | null;
@@ -7,8 +17,8 @@ interface AuthContextValue {
   signIn: (email: string, password: string) => Promise<void>;
   signUp: (name: string, email: string, password: string) => Promise<void>;
   signInWithGoogle: () => Promise<void>;
-  signOut: () => void;
-  updateProfile: (patch: Partial<UserProfile>) => void;
+  signOut: () => Promise<void>;
+  updateProfile: (patch: Partial<UserProfile>) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null);
@@ -19,73 +29,81 @@ export function useAuth() {
   return ctx;
 }
 
-const KEY = 'docuforge.user';
-const wait = (ms: number) => new Promise((r) => setTimeout(r, ms));
-
 export function AuthProvider({ children }: {children: React.ReactNode;}) {
   const [user, setUser] = useState<UserProfile | null>(null);
   const [ready, setReady] = useState(false);
+  const [firebaseUid, setFirebaseUid] = useState<string | null>(null);
 
   useEffect(() => {
-    try {
-      const raw = window.localStorage.getItem(KEY);
-      if (raw) setUser(JSON.parse(raw) as UserProfile);
-    } catch {
+    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+      if (firebaseUser) {
+        setFirebaseUid(firebaseUser.uid);
+        const userRef = ref(database, 'users/' + firebaseUser.uid);
+        const snapshot = await get(userRef);
+        if (snapshot.exists()) {
+          setUser(snapshot.val());
+        } else {
+          const defaultProfile: UserProfile = {
+            name: firebaseUser.displayName || firebaseUser.email?.split('@')[0] || 'User',
+            email: firebaseUser.email || '',
+            avatar: firebaseUser.photoURL,
+            college: '',
+            department: ''
+          };
+          setUser(defaultProfile);
+          set(userRef, defaultProfile);
+        }
+      } else {
+        setFirebaseUid(null);
+        setUser(null);
+      }
+      setReady(true);
+    });
 
-      /* ignore corrupt storage */}
-    setReady(true);
-  }, []);
-
-  const persist = useCallback((next: UserProfile | null) => {
-    setUser(next);
-    if (next) window.localStorage.setItem(KEY, JSON.stringify(next));else
-    window.localStorage.removeItem(KEY);
+    return () => unsubscribe();
   }, []);
 
   const signIn = useCallback(
     async (email: string, password: string) => {
-      await wait(650);
-      if (!email.includes('@')) throw new Error('Enter a valid email address.');
-      if (password.length < 6) throw new Error('Password must be at least 6 characters.');
-      persist({
-        name: email.split('@')[0].replace(/[._]/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase()),
-        email,
-        avatar: null,
-        college: '',
-        department: ''
-      });
+      await signInWithEmailAndPassword(auth, email, password);
     },
-    [persist]
+    []
   );
 
   const signUp = useCallback(
     async (name: string, email: string, password: string) => {
-      await wait(750);
       if (name.trim().length < 2) throw new Error('Enter your full name.');
-      if (!email.includes('@')) throw new Error('Enter a valid email address.');
-      if (password.length < 6) throw new Error('Password must be at least 6 characters.');
-      persist({ name: name.trim(), email, avatar: null, college: '', department: '' });
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const newProfile: UserProfile = { 
+        name: name.trim(), 
+        email, 
+        avatar: null, 
+        college: '', 
+        department: '' 
+      };
+      await set(ref(database, 'users/' + userCredential.user.uid), newProfile);
+      setUser(newProfile);
     },
-    [persist]
+    []
   );
 
   const signInWithGoogle = useCallback(async () => {
-    await wait(800);
-    persist({ name: 'Aarav Mehta', email: 'aarav.mehta@college.edu', avatar: null, college: '', department: '' });
-  }, [persist]);
+    const provider = new GoogleAuthProvider();
+    await signInWithPopup(auth, provider);
+  }, []);
 
-  const signOut = useCallback(() => persist(null), [persist]);
+  const signOut = useCallback(async () => {
+    await firebaseSignOut(auth);
+  }, []);
 
   const updateProfile = useCallback(
-    (patch: Partial<UserProfile>) => {
-      setUser((prev) => {
-        if (!prev) return prev;
-        const next = { ...prev, ...patch };
-        window.localStorage.setItem(KEY, JSON.stringify(next));
-        return next;
-      });
+    async (patch: Partial<UserProfile>) => {
+      if (!firebaseUid || !user) return;
+      const next = { ...user, ...patch };
+      setUser(next);
+      await set(ref(database, 'users/' + firebaseUid), next);
     },
-    []
+    [firebaseUid, user]
   );
 
   const value = useMemo(
