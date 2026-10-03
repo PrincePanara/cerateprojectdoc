@@ -32,14 +32,13 @@ export function Auth() {
     try {
       if (mode === 'signup') await signUp(name, email, password);else
       await signIn(email, password);
-      navigate(nextRoute, { replace: true });
+      // Navigation is handled by the useEffect when 'user' becomes truthy
     } catch (err: any) {
       let msg = err instanceof Error ? err.message : 'Something went wrong. Please try again.';
       if (msg.includes('auth/invalid-credential')) msg = 'Invalid email or password.';
       else if (msg.includes('auth/email-already-in-use')) msg = 'An account with this email already exists.';
       else if (msg.includes('auth/weak-password')) msg = 'Password should be at least 6 characters.';
       setError(msg);
-    } finally {
       setLoading(false);
     }
   };
@@ -49,10 +48,8 @@ export function Auth() {
     setLoading(true);
     try {
       await signIn('aarav.mehta@college.edu', 'demo1234');
-      navigate(nextRoute, { replace: true });
     } catch {
       setError('Could not open the demo workspace.');
-    } finally {
       setLoading(false);
     }
   };
@@ -126,13 +123,12 @@ export function Auth() {
                   setLoading(true);
                   try {
                     await signInWithGoogle();
-                    navigate(nextRoute, { replace: true });
                   } catch (err: any) {
                     let msg = err instanceof Error ? err.message : 'Failed to sign in with Google.';
                     if (msg.includes('auth/popup-closed-by-user')) msg = 'Sign-in popup was closed before completing.';
                     else if (msg.includes('auth/cancelled-popup-request')) msg = 'Sign-in popup was cancelled.';
+                    else if (msg.includes('auth/unauthorized-domain')) msg = 'This domain is not authorized for Google Sign-In. Please add it in the Firebase Console.';
                     setError(msg);
-                  } finally {
                     setLoading(false);
                   }
                 }}>

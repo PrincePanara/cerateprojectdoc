@@ -38,20 +38,32 @@ export function AuthProvider({ children }: {children: React.ReactNode;}) {
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
       if (firebaseUser) {
         setFirebaseUid(firebaseUser.uid);
-        const userRef = ref(database, 'users/' + firebaseUser.uid);
-        const snapshot = await get(userRef);
-        if (snapshot.exists()) {
-          setUser(snapshot.val());
-        } else {
-          const defaultProfile: UserProfile = {
+        try {
+          const userRef = ref(database, 'users/' + firebaseUser.uid);
+          const snapshot = await get(userRef);
+          if (snapshot.exists()) {
+            setUser(snapshot.val());
+          } else {
+            const defaultProfile: UserProfile = {
+              name: firebaseUser.displayName || firebaseUser.email?.split('@')[0] || 'User',
+              email: firebaseUser.email || '',
+              avatar: firebaseUser.photoURL,
+              college: '',
+              department: ''
+            };
+            setUser(defaultProfile);
+            set(userRef, defaultProfile).catch(console.error);
+          }
+        } catch (err) {
+          console.error("Firebase Database error:", err);
+          // Fallback so the user can still log in even if DB rules block access
+          setUser({
             name: firebaseUser.displayName || firebaseUser.email?.split('@')[0] || 'User',
             email: firebaseUser.email || '',
             avatar: firebaseUser.photoURL,
             college: '',
             department: ''
-          };
-          setUser(defaultProfile);
-          set(userRef, defaultProfile);
+          });
         }
       } else {
         setFirebaseUid(null);
